@@ -1,0 +1,8 @@
+# env files
+.env*
+NGINX_SETUP.md
+
+# node modules
+/node_modules
+
+/src/config/firebase.serviceAccount.json.env

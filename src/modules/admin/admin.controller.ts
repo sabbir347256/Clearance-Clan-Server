@@ -3,6 +3,7 @@ import { AdminService } from "./admin.service";
 import asyncHandler from '../../utils/CatchAsync';
 import { AuthService } from '../auth/auth.service';
 import { uploadBufferToCloudinary } from '../../config/cloudinary.config';
+import { CetegoryType } from '../categories/category.model';
 
 const getPlatformStats = async (req: Request, res: Response) => {
   const period = (req.query.period as string) === 'weekly' ? 'weekly' : (req.query.period as string) === 'monthly' ? 'monthly' : undefined;
@@ -118,8 +119,9 @@ const addShopCategory = async (req: Request, res: Response) => {
 
 const addProductCategory = async (req: Request, res: Response) => {
   const { name } = req.body;
+  const type = req.params.type;
   const file = (req.file as Express.Multer.File) || undefined;
-  const category = await AdminService.addProductCategory(name, file);
+  const category = await AdminService.addProductCategory(name, file,type as CetegoryType);
   res.json({
     success: true,
     message: 'Product category added successfully',

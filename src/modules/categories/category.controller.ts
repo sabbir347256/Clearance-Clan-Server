@@ -4,6 +4,7 @@ import asyncHandler from '../../utils/CatchAsync';
 
 const listShopCategories = async (req: Request, res: Response) => {
   const categories = await CategoryService.listShopCategories();
+  console.log(categories)
   res.json({ success: true, data: categories });
 };
 

@@ -22,7 +22,7 @@ const createCategory = async (name: string, file?: FileField, type: 'SHOP' | 'PR
 };
 
 const listShopCategories = async () => {
-  return Category.find({ type: 'SHOP' }).sort({ createdAt: -1 });
+  return await Category.find({ type: 'SHOP' }).sort({ createdAt: -1 });
 };
 
 const listProductCategories = async () => {

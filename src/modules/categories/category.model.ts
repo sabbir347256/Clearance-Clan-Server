@@ -1,10 +1,14 @@
 import { Schema, model, Document } from 'mongoose';
 
+
+export type CetegoryType = 'SHOP' | 'PRODUCT'
+
+
 export interface ICategory extends Document {
   name: string;
   imageUrl?: string;
   imagePublicId?: string;
-  type?: 'SHOP' | 'PRODUCT';
+  type: CetegoryType;
 }
 
 const categorySchema = new Schema<ICategory>(

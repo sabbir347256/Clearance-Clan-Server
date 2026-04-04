@@ -6,6 +6,7 @@ import { Order } from '../order/order.model';
 import { GraphService } from '../graphs/graph.service';
 import { Banner } from "./banner.model";
 import { Product } from "../products/product.model";
+import { CetegoryType } from "../categories/category.model";
 
 const getAllPendingShops = async () => {
   return Shop.find({ status: 'PENDING' })
@@ -162,8 +163,8 @@ const addShopCategory = async (name: string, file?: Express.Multer.File) => {
   return category;
 }
 
-const addProductCategory = async (name: string, file?: Express.Multer.File) => {
-  const category = await CategoryService.createCategory(name, file, 'PRODUCT');
+const addProductCategory = async (name: string, file?: Express.Multer.File, type?:CetegoryType) => {
+  const category = await CategoryService.createCategory(name, file, type);
   return category;
 }
 

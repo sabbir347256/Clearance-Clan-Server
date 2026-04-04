@@ -45,7 +45,6 @@ const registerUser = async (
     stripeConnectAccountId
   });
 
-  // sanitize like login
   const { password: _, ...safeUser } = user.toObject();
 
   return safeUser;

@@ -25,8 +25,13 @@ const registerUser = async (
   const exists = await User.findOne({ email });
   if (exists) throw new AppError(400, 'Email already exists');
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  console.log("Hashpassword")
+  if (!password) {
+    throw new Error('Password is required');
+  }
+  const hashedPassword = await bcrypt.hash(password, Number(10));
 
+  console.log("Hashpassword", hashedPassword)
   let stripeConnectAccountId: string | undefined;
 
   if (role === 'SELLER') {

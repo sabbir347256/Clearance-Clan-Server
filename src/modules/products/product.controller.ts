@@ -151,7 +151,11 @@ const createProduct = async (req: Request, res: Response) => {
 // 🔹 Get seller's products (seller only)
 const getMyProducts = async (req: Request, res: Response) => {
   try {
+
+   
     const shop = await Shop.findOne({ userId: req.user?._id });
+
+
 
     if (!shop) {
       return res.status(400).json({
@@ -163,11 +167,16 @@ const getMyProducts = async (req: Request, res: Response) => {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
 
+
     const result = await ProductService.getProductsByShop({
       shopId: shop._id.toString(),
       page,
       limit,
     });
+
+
+  
+
 
     res.status(200).json({
       success: true,
@@ -187,10 +196,14 @@ const updateProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.id;
 
+
+
+
     const shop = await Shop.findOne({ userId: req.user?._id });
     if (!shop) {
       return res.status(400).json({ success: false, message: 'Seller shop not found' });
     }
+
 
     // 🔹 Parse body fields (form-data)
     const name = req.body.name;
@@ -202,6 +215,21 @@ const updateProduct = async (req: Request, res: Response) => {
     const shipping = parseIfString(req.body.shipping);
     const inventory = parseIfString(req.body.inventory);
 
+
+
+
+     if (typeof req.body['pricing'] === "string") {
+      try {
+        req.body['pricing'] = JSON.parse(req.body['pricing']);
+      } catch (err) {
+        return res.status(400).json({
+          status: "error",
+          message: `${'pricing'} must be valid JSON`
+        });
+      }
+    }
+
+  
     // 🔹 Validate category (if provided)
     if (category) {
       const categoryDoc = await Category.findById(category);
@@ -282,9 +310,12 @@ const updateProduct = async (req: Request, res: Response) => {
         inventory,
         shipping,
         status,
+        pricing : req.body.pricing,
         ...(Object.keys(media).length ? { media } : {})
       }
     });
+
+
 
     if (!updated) {
       return res.status(404).json({

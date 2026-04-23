@@ -17,17 +17,17 @@ const createProduct = async (payload: Partial<IProduct>) => {
   }
 
   // if payload.inventory.stock exist, set direct stock. otherwise payload variants exist so calculate paylaod variants stock
-if (!payload.variants && payload.inventory && payload.inventory?.stock > 0) {
-  payload.inventory = {
-    stock: payload.inventory.stock,
-    lowStockAlert: payload.inventory.lowStockAlert || 10,
-  };
-} else if (payload.variants && payload.variants?.length > 0) {
-  payload.inventory = {
-    stock: calculateTotalStock(payload.variants),
-    lowStockAlert: payload.inventory?.lowStockAlert || 10,
-  };
-}
+  if (!payload.variants && payload.inventory && payload.inventory?.stock > 0) {
+    payload.inventory = {
+      stock: payload.inventory.stock,
+      lowStockAlert: payload.inventory.lowStockAlert || 10,
+    };
+  } else if (payload.variants && payload.variants?.length > 0) {
+    payload.inventory = {
+      stock: calculateTotalStock(payload.variants),
+      lowStockAlert: payload.inventory?.lowStockAlert || 10,
+    };
+  }
 
   // 🔹 Get shop + seller Stripe account
   const shop = await Shop.findById(payload.shop).populate('userId');
@@ -132,7 +132,7 @@ const findById = async (
 const getProductsByShop = async ({
   shopId,
   page,
-  limit,  
+  limit,
 }: GetProductsByShopParams) => {
 
   const filter: any = {
@@ -150,6 +150,9 @@ const getProductsByShop = async ({
 
     Product.countDocuments(filter)
   ]);
+
+
+  console.log(products, filter)
 
   return {
     meta: {
@@ -257,18 +260,20 @@ const updateProduct = async ({
   const product = await Product.findOne({ _id: productId, shop: shopId });
   if (!product) return null;
 
-    // if payload.inventory.stock exist, set direct stock. otherwise payload variants exist so calculate paylaod variants stock
-if (!payload.variants && payload.inventory && payload.inventory?.stock > 0) {
-  payload.inventory = {
-    stock: payload.inventory.stock,
-    lowStockAlert: payload.inventory.lowStockAlert || 10,
-  };
-} else if (payload.variants && payload.variants?.length > 0) {
-  payload.inventory = {
-    stock: calculateTotalStock(payload.variants),
-    lowStockAlert: payload.inventory?.lowStockAlert || 10,
-  };
-}
+
+
+  // if payload.inventory.stock exist, set direct stock. otherwise payload variants exist so calculate paylaod variants stock
+  if (!payload.variants && payload.inventory && payload.inventory?.stock > 0) {
+    payload.inventory = {
+      stock: payload.inventory.stock,
+      lowStockAlert: payload.inventory.lowStockAlert || 10,
+    };
+  } else if (payload.variants && payload.variants?.length > 0) {
+    payload.inventory = {
+      stock: calculateTotalStock(payload.variants),
+      lowStockAlert: payload.inventory?.lowStockAlert || 10,
+    };
+  }
 
   // 🔹 Sync inventory stock if variants updated
   // if (payload.variants) {
@@ -312,7 +317,7 @@ const toggleProductActive = async (
     _id: productId,
     shop: shopId
   });
-  
+
   if (!product) {
     throw new AppError(404, 'Product not found or unauthorized');
   }

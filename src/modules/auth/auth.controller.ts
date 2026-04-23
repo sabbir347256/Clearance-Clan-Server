@@ -12,10 +12,14 @@ const registerBuyer = async (req: Request, res: Response) => {
 };
 
 const registerSeller = async (req: Request, res: Response) => {
+
   const { fullName, email, password, confirmpassword, country } = req.body;
-  if (password !== confirmpassword) {
+
+  if (req.body.password !== req.body.confirmpassword) {
     return res.status(400).json({ success: false, message: 'Passwords do not match' });
   }
+
+
   const user = await AuthService.registerUser(fullName, email, password, 'SELLER', country);
   res.json({ success: true, data: user });
 };
@@ -69,26 +73,26 @@ const logout = async (req: Request, res: Response) => {
   }
 };
 
-  const forgotPassword = async (req: Request, res: Response) => {
-    const { email } = req.body;
-    if (!email) throw new AppError(400, 'Email is required');
-    await AuthService.forgotPassword(email);
-    res.json({ success: true, message: 'OTP sent to email if account exists' });
-  };
+const forgotPassword = async (req: Request, res: Response) => {
+  const { email } = req.body;
+  if (!email) throw new AppError(400, 'Email is required');
+  await AuthService.forgotPassword(email);
+  res.json({ success: true, message: 'OTP sent to email if account exists' });
+};
 
-  const verifyResetOtp = async (req: Request, res: Response) => {
-    const { email, otp } = req.body;
-    if (!email || !otp) throw new AppError(400, 'Email and OTP are required');
-    await AuthService.verifyResetOtp(email, otp);
-    res.json({ success: true, message: 'OTP verified' });
-  };
+const verifyResetOtp = async (req: Request, res: Response) => {
+  const { email, otp } = req.body;
+  if (!email || !otp) throw new AppError(400, 'Email and OTP are required');
+  await AuthService.verifyResetOtp(email, otp);
+  res.json({ success: true, message: 'OTP verified' });
+};
 
-  const resetPassword = async (req: Request, res: Response) => {
-    const { email, newPassword } = req.body;
-    if (!email || !newPassword) throw new AppError(400, 'Email and newPassword are required');
-    await AuthService.resetPassword(email, newPassword);
-    res.json({ success: true, message: 'Password reset successful' });
-  };
+const resetPassword = async (req: Request, res: Response) => {
+  const { email, newPassword } = req.body;
+  if (!email || !newPassword) throw new AppError(400, 'Email and newPassword are required');
+  await AuthService.resetPassword(email, newPassword);
+  res.json({ success: true, message: 'Password reset successful' });
+};
 
 export const AuthController = {
   registerBuyer: CatchAsync(registerBuyer),
@@ -96,8 +100,8 @@ export const AuthController = {
   login: CatchAsync(login),
   googleOAuth: CatchAsync(googleOAuth),
   appleOAuth: CatchAsync(appleOAuth),
-    logout: CatchAsync(logout),
-    forgotPassword: CatchAsync(forgotPassword),
-    verifyResetOtp: CatchAsync(verifyResetOtp),
-    resetPassword: CatchAsync(resetPassword)
+  logout: CatchAsync(logout),
+  forgotPassword: CatchAsync(forgotPassword),
+  verifyResetOtp: CatchAsync(verifyResetOtp),
+  resetPassword: CatchAsync(resetPassword)
 };

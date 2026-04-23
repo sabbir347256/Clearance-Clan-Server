@@ -44,7 +44,7 @@ export interface IProduct {
   // Admin approval status
   approvalStatus?: 'PENDING' | 'APPROVED' | 'REJECTED';
 
-  // ✅ Stripe
+  // Stripe
   stripeProductId?: string;
   stripePriceId?: string;
 }

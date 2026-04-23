@@ -14,9 +14,9 @@ if (!admin.apps.length) {
         privateKey
       })
     });
-    console.log('✅ Firebase Admin SDK initialized with credentials');
+    console.log('Firebase Admin SDK initialized with credentials');
   } else {
-    console.warn('⚠️  Firebase credentials not found in env. Push notifications will not work.');
+    console.warn('Firebase credentials not found in env. Push notifications will not work.');
     console.warn('   Set PROJECT_ID, CLIENT_EMAIL, and PRIVATE_KEY in your .env file');
     // Don't initialize to avoid silent failures
   }

@@ -74,7 +74,7 @@ const productSchema = new Schema<IProduct>(
       default: 'PENDING'
     },
 
-    // ✅ Stripe
+    // Stripe
     stripeProductId: { type: String },
     stripePriceId: { type: String }
   },

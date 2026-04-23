@@ -1,7 +1,7 @@
 import { Schema, model, Types } from 'mongoose';
 import { IShop } from './seller.interface';
 
-
+//  asfasdfsdf
 const shopSchema = new Schema<IShop>(
   {
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },

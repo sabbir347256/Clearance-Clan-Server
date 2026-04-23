@@ -1,6 +1,6 @@
 import { stripe } from '../../config/stripe.config';
 
-const ROOT_URL = process.env.ROOT_URL || 'http://localhost:3002';
+const ROOT_URL = 'https://clearanceclan-backend.onrender.com/';
 
 export const createAccount = async (payload: { country?: string; email?: string }) => {
   const { country = 'US', email } = payload || {};

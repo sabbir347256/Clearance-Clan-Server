@@ -13,9 +13,12 @@ import eventBus, { Events } from '../../events/eventBus';
 const placeOrder = async (req: Request, res: Response) => {
   const userId = req.user?._id;
   const { addressId } = req.body || {};
+  console.log("place oder",req.body)
 
   // Step 1: Create order with PENDING status and persist to database
   const order = await OrderService.placeOrder(String(userId), addressId as string | undefined);
+
+  console.log("order",order)
   // Emit event for order creation
   try {
     eventBus.emit(Events.ORDER_PLACED, { orderId: String(order._id) });
@@ -26,10 +29,14 @@ const placeOrder = async (req: Request, res: Response) => {
   // Populate product snapshots for response
   const populatedOrder = await (await import('./order.model')).Order.findById(order._id).populate({ path: 'items.product', select: 'name pricing variants media shop stripeProductId stripePriceId' });
 
+
+console.log("ascecceeeee")
+
   // Step 2: Initiate Stripe Checkout for the created order
   let checkoutSession: any;
   try {
-    checkoutSession = await OrderService.initiateCheckout(String(order._id), process.env.ROOT_URL);
+    checkoutSession = await OrderService.initiateCheckout(String(order._id), process.env.ROOT_URL || "https://www.youtube.com/");
+    
   } catch (err: any) {
     console.error('Checkout initiation failed', err);
     // Don't fail the entire request; order was created, inform client to retry checkout
@@ -40,6 +47,7 @@ const placeOrder = async (req: Request, res: Response) => {
     });
   }
 
+  console.log(checkoutSession,"checkout session")
   // Step 3: Return order with checkout session URL to client
   return res.status(201).json({
     success: true,

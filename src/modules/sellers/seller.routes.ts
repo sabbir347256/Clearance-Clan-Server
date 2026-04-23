@@ -10,12 +10,12 @@ const router = Router();
 
 // Debug middleware to log request before multer
 const debugRequest = (req: Request, res: Response, next: NextFunction) => {
-  console.log('\n=== PRE-MULTER DEBUG ===');
-  console.log('Content-Type:', req.headers['content-type']);
-  console.log('Content-Length:', req.headers['content-length']);
-  console.log('Has body:', !!req.body);
-  console.log('Body readable:', req.readable);
-  console.log('========================\n');
+  // console.log('\n=== PRE-MULTER DEBUG ===');
+  // console.log('Content-Type:', req.headers['content-type']);
+  // console.log('Content-Length:', req.headers['content-length']);
+  // console.log('Has body:', !!req.body);
+  // console.log('Body readable:', req.readable);
+  // console.log('========================\n');
   next();
 };
 
